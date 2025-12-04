@@ -1,0 +1,13 @@
+# Ignore Executables
+master
+blackboard
+dynamics
+obstacles
+targets
+map_window
+control
+
+# Ignore object files and temporary files
+*.o
+*.log
+.DS_Store
