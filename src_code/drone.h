@@ -42,7 +42,7 @@ void get_params(Params *p) {
     // So we set these default values 
     p->M = 1.0; p->K = 0.5; p->T = 0.1; p->W = 80; p->H = 24;
     
-    FILE *f = fopen("configuration/params.txt", "r");
+    FILE *f = fopen("params.txt", "r");
     if (!f) return;
     char key[32];
     while(fscanf(f, "%s", key) != EOF) {

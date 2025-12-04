@@ -1,23 +1,34 @@
 # Drone Simulator Project - Assignment 1
+**Author:** Bouhraoua Hani
 **Student:** 8314923  
 **Date:** December 4, 2024
 
+# Project Overview
+
+The Drone Simulator is a multi-process real-time system that models the behavior of a drone navigating inside a 2D environment populated with targets and obstacles. The system follows a Blackboard Architecture, a design where multiple processes collaborate by reading and writing shared information to a central data structure called the Blackboard Server.
+
+## System Architecture
+This diagram illustrates the process hierarchy and IPC data flow. The Master acts as the bootstrapper.
+
+![Architecture Diagram](./assets/Project_Architecture.png)
+
+## Simulation Demo
+Below is a snapshot of the simulation in action, showing the visual output rendered by the Control Window based on data fetched from Shared Memory.
+
+![Simulation Screenshot](./assets/Project_simulation.png)
+
 ## 1. Sketch of the Architecture
-[cite_start]The system implements a concurrent, multi-process **Blackboard Architecture**[cite: 31, 49].  
+The system implements a concurrent, multi-process **Blackboard Architecture**.  
 The `Blackboard` process acts as the central repository. All other processes communicate only with the Blackboard using **unnamed pipes**, ensuring modularity and decoupling.
 
-[Image of blackboard architecture diagram]
+
 
 **Data Flow:**
-1. **Input:** `Control Window` captures keystrokes → sends force data to the Blackboard.  
+1. **Input:** `Control Window` captures keystrokes               → sends force data to the Blackboard.  
 2. **Environment:** `Obstacles` & `Targets` generate coordinates → send to the Blackboard.  
-3. **Physics:** `Dynamics` reads state from the Blackboard → computes new state → updates Blackboard.  
-4. **Output:** `Map Window` reads Blackboard state → renders the simulation.
+3. **Physics:** `Dynamics` reads state from the Blackboard       → computes new state → updates Blackboard.  
+4. **Output:** `Map Window` reads Blackboard state               → renders the simulation.
 
-**Refactoring Attempt:**  
-A partial implementation was attempted for **runtime parameter configuration**, enabling dynamic safety threshold updates without recompiling.  
-While not fully integrated due to time and technical constraints, the rest of the system (control, monitoring, collision avoidance) works correctly.  
-This feature is planned for a future release.
 
 ---
 
@@ -31,21 +42,21 @@ This feature is planned for a future release.
 ### B. Blackboard Server (`blackboard.c`)
 * **Role:** Central Hub.  
 * **Function:** Routes data between agents using non-blocking multiplexing.  
-* [cite_start]**Primitives:** `select()`, `read()`, `write()`[cite: 137].  
+* **Primitives:** `select()`, `read()`, `write()`.  
 * **Logic:** FD-set scanning + event-driven routing.
 
 ### C. Drone Dynamics (`dynamics.c`)
 * **Role:** Physics engine.  
 * **Function:** Maintains drone state: position, velocity, forces.  
 * **Algorithms:**  
-  1. [cite_start]**Motion Integration:** Euler method[cite: 74, 75].  
-  2. [cite_start]**Repulsion Model:** Latombe/Khatib potential fields[cite: 85].  
-  3. [cite_start]**Virtual Key Mapping:** Projects repulsion to directional commands[cite: 94].
+  1. **Motion Integration:** Euler method.  
+  2. **Repulsion Model:** Latombe/Khatib potential fields.  
+  3. **Virtual Key Mapping:** Projects repulsion to directional commands.
 
 ### D. Map Window (`map_window.c`)
 * **Role:** Renderer.  
 * **Function:** Draws drone, targets, obstacles. Handles terminal resizing.  
-* [cite_start]**Primitives:** `ncurses` (colors, windows)[cite: 133].
+* **Primitives:** `ncurses` (colors, windows).
 
 ### E. Control Window (`control.c`)
 * **Role:** Input handler.  
@@ -66,10 +77,13 @@ This feature is planned for a future release.
 │
 ├── Makefile                  # Build script
 ├── run.sh                    # Execution script
-├── README.md                 # Project documentation
+├── README.md                 # Project documentation 
+├── params.txt
 │
-├── configuration/            # Configuration Directory
-│   └── params.txt            # Physics & Window parameters (Editable)
+├── assets/                   # assets Directory 
+│   ├── Project_simulation.png            
+│   └── Project_Architecture.png 
+│   
 │
 └── src_code/                 # Source Code Directory
     ├── master.c              # Main process
@@ -79,16 +93,20 @@ This feature is planned for a future release.
     ├── control.c             # Input handling
     ├── obstacles.c           # Generator
     ├── targets.c             # Generator
-    └── drone.h               # Shared header (Structs & Includes)
-    ``` 
+    ├── drone.h               # Shared header (Structs & Includes)
+    └── params.txt
+``` 
     
 ## 4. Operational Instructions
 
 ### Controls
-Q / W / E : Up-Left / Up / Up-Right  
-A / S / D : Left / BRAKE / Right  
-Z / X / C : Down-Left / Down / Down-Right  
-P         : Pause / Quit Simulation
+```text
+a / z / e : Up-Left    / Up     / Up-Right  
+q / S / D : Left       / BRAKE  / Right  
+w / x / c : Down-Left  / Down   / Down-Right  
+
+P         : Quit Simulation
+```
 
 ### Visual Legend
 +   → Drone (white)  
@@ -113,26 +131,36 @@ These can be edited while the system is running.
 ## 5. Installation and Running
 
 ### Prerequisites
-Install ncurses:
-
+Install ncurses:  
+```text
 sudo apt-get install libncurses5-dev libncursesw5-dev
+```
+Also make sure to install Konsole (used to display the two windows correctly on KDE-based systems):
+```text
+sudo apt-get install konsole
+```
 
 ### Compilation
-From project root:
-
+From project root:  
+```text
 make
+```
 
 This compiles all files inside src_code/.
 
 ### Execution
 
-Using script:
-
+Using script:  
+```text
+chmod +x run.sh 
 ./run.sh
+```
 
-Or manual:
+Or manual:  
+```text
 
 ./master
+```
 
-Stop simulation using P in the Control Window or by closing the terminal.
+Stop simulation using **P** in the Control Window or by closing the terminal.
 

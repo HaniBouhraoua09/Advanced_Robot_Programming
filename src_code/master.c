@@ -2,8 +2,8 @@
 
 int main() {
     // 1. Setup Params (Only if file doesn't exist)
-    if (access("configuration/params.txt", F_OK) != 0) {
-        FILE *f = fopen("configuration/params.txt", "w");
+    if (access("params.txt", F_OK) != 0) {
+        FILE *f = fopen("params.txt", "w");
         if (f) { 
             fprintf(f, "M 1.0\nK 0.5\nT 0.1\nWidth 80\nHeight 24\n"); 
             fclose(f); 
