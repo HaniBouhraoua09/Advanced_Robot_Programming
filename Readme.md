@@ -46,12 +46,26 @@ The `Blackboard` process acts as the central repository. All other processes com
 * **Logic:** FD-set scanning + event-driven routing.
 
 ### C. Drone Dynamics (`dynamics.c`)
-* **Role:** Physics engine.  
-* **Function:** Maintains drone state: position, velocity, forces.  
-* **Algorithms:**  
-  1. **Motion Integration:** Euler method.  
-  2. **Repulsion Model:** Latombe/Khatib potential fields.  
-  3. **Virtual Key Mapping:** Projects repulsion to directional commands.
+* **Role:** Physics engine.
+* **Function:** Maintains drone state: position, velocity, forces.
+* **Algorithms:**
+  1. **Motion Integration (Semi-Implicit Euler):**
+     The drone's movement is calculated using Newton's Second Law with damping (friction).
+     
+     $$a = \frac{F_{input} + F_{repulsion} - (K \cdot v)}{M}$$
+     $$v_{new} = v_{old} + a \cdot \Delta t$$
+     $$x_{new} = x_{old} + v_{new} \cdot \Delta t$$
+
+     *Where $M$ is mass, $K$ is the friction coefficient, and $\Delta t$ is the time step.*
+
+  2. **Repulsion Model (Latombe/Khatib Potential Field):**
+     Obstacles generate a repulsive force only when the drone enters their influence radius ($\rho$).
+     
+     $$F_{rep} = \eta \left( \frac{1}{d} - \frac{1}{\rho} \right) \frac{1}{d^2}$$
+     
+     *Where $d$ is the distance to the obstacle and $\eta$ is the repulsion gain.*
+
+  3. **Virtual Key Mapping:** Projects the calculated total force vector onto the nearest discrete keyboard direction (e.g., 'Q', 'W', 'E') to simulate autonomous avoidance inputs.
 
 ### D. Map Window (`map_window.c`)
 * **Role:** Renderer.  
