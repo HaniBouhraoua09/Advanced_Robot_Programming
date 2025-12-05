@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
             write(fd_out, &msg, sizeof(Message));
         }
         
-        // SYNC: Sleep 20 seconds (Same as targets.c)
+        
         sleep(20); 
     }
     return 0;

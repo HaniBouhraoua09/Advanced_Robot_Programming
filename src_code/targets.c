@@ -20,8 +20,7 @@ int main(int argc, char *argv[]) {
         get_params(&p); 
         if (p.W < 10) { sleep(1); continue; }
 
-        // --- CHANGE: Generate 9 Targets (IDs 0 to 8) ---
-        // This ensures labels are strictly 1 through 9.
+
         for(int i=0; i<9; i++) {
             msg.id = i; 
             

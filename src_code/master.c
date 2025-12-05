@@ -75,11 +75,7 @@ int main() {
         exit(0);
     }
     
-    // --- PRINT PIDs (Matches your screenshot) ---
-    printf("Konsole of Map pid is %d\n", map_pid);
-    printf("Target pid is %d\n", targ_pid);
-    printf("Obstacles pid is %d\n", obs_pid);
-    // --------------------------------------------
+
 
     // 8. LAUNCH CONTROL WINDOW
     pid_t ctrl_pid = fork();
@@ -90,6 +86,15 @@ int main() {
         execlp("konsole", "konsole", "-e", "./control", arg1, arg2, NULL);
         exit(0);
     }
+    
+    // --- PRINT PIDs (Matches your screenshot) ---
+    printf("Blackboard pid is %d\n", bb_pid);
+    printf("Dynamics pid is %d\n", dyn_pid);
+    printf("Control_window pid is %d\n", ctrl_pid);
+    printf("Konsole of Map pid is %d\n", map_pid);
+    printf("Target pid is %d\n", targ_pid);
+    printf("Obstacles pid is %d\n", obs_pid);
+    // --------------------------------------------
 
     // 9. CLOSE PIPES IN MASTER
     close(p_ctrl_bb[0]); close(p_ctrl_bb[1]);
