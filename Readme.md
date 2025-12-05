@@ -56,7 +56,7 @@ The `Blackboard` process acts as the central repository. All other processes com
      $$v_{new} = v_{old} + a \cdot \Delta t$$
      $$x_{new} = x_{old} + v_{new} \cdot \Delta t$$
 
-     *Where $M$ is mass, $K$ is the friction coefficient, and $\Delta t$ is the time step.*
+     *Where M is mass, K is the friction coefficient, and Delta_t is the time step.*
 
   2. **Repulsion Model (Latombe/Khatib Potential Field):**
      Obstacles generate a repulsive force only when the drone enters their influence radius ($\rho$).
