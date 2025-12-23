@@ -1,11 +1,11 @@
 # Drone Simulator Project - Assignment 1
-**Author:** Bouhraoua Hani
-**Student:** 8314923
-**Date:** December 23, 2025
+**Author:** Bouhraoua Hani  
+**Student:** 8314923   
+**Date:** December 23, 2025  
 
 # Project Overview
 
-The Drone Simulator is a multi-process real-time system that models the behavior of a drone navigating inside a 2D environment populated with targets and obstacles. The system follows a Blackboard Architecture, a design where multiple processes collaborate by reading and writing shared information to a central data structure called the Blackboard Server.
+The Drone Simulator is a multi-process real-time system that models the behavior of a drone navigating inside a 2D environment populated with targets and obstacles. The system follows a Blackboard Architecture, a design where multiple processes collaborate by reading and writing shared information to a central data structure called the Blackboard Server. Plus the system monitoring called the watch implmenetd in the second assignment and can be seen below in the archtecture .
 
 ## System Architecture
 This diagram illustrates the process hierarchy and IPC data flow. The Master acts as the bootstrapper.
