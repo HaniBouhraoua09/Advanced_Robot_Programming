@@ -18,7 +18,7 @@ This diagram illustrates the process hierarchy and IPC data flow. The Master act
 Below is a snapshot of the simulation in action, showing the visual output rendered by the Control Window based on data fetched from Shared Memory.
 
 ![Simulation Screenshot](./assets/Project_simulation.png)
-![Simulation Screenshot](./assets/watchdog.png)
+![Simulation Screenshot](./assets/Watchdog.png)
 
 ## 1. Sketch of the Architecture
 The system implements a concurrent, multi-process **Blackboard Architecture**.  
