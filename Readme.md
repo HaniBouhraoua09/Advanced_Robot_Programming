@@ -1,6 +1,8 @@
 # Drone Simulator Project - Assignment 1
-**Author:** Bouhraoua Hani
-**Student:** 8314923 
+**Author:** Bouhraoua Hani 
+
+**Student:** 8314923  
+
 **Date:** December 4, 2024
 
 # Project Overview
@@ -10,12 +12,13 @@ The Drone Simulator is a multi-process real-time system that models the behavior
 ## System Architecture
 This diagram illustrates the process hierarchy and IPC data flow. The Master acts as the bootstrapper.
 
-![Architecture Diagram](./assets/Project_Architecture_with watchdog.png)
+![Architecture Diagram](./assets/Project_Architecture_with_watchdog.png)
 
 ## Simulation Demo
 Below is a snapshot of the simulation in action, showing the visual output rendered by the Control Window based on data fetched from Shared Memory.
 
 ![Simulation Screenshot](./assets/Project_simulation.png)
+![Simulation Screenshot](./assets/watchdog.png)
 
 ## 1. Sketch of the Architecture
 The system implements a concurrent, multi-process **Blackboard Architecture**.  
