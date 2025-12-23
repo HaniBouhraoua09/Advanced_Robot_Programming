@@ -47,6 +47,10 @@ void layout_and_draw(WINDOW *win, char last_key) {
 }
 
 int main(int argc, char *argv[]) {
+
+    // This now does Registering AND Listening
+    setup_watchdog("CONTROL");
+    
     if(argc<3) return 1;
     int fd_out = atoi(argv[1]);
     int fd_in  = atoi(argv[2]);
@@ -60,6 +64,8 @@ int main(int argc, char *argv[]) {
     refresh();
     layout_and_draw(win, 0);
     // -------------------------------
+    
+
 
     while(running) {
         fd_set fds; struct timeval tv={0,0};

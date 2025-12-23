@@ -6,6 +6,10 @@
 #define MAX_V 20.0 
 
 int main(int argc, char *argv[]) {
+
+    // This now does Registering AND Listening
+    setup_watchdog("DYNAMICS"); 
+    
     if (argc < 3) return 1;
     int fd_in = atoi(argv[1]);  
     int fd_out = atoi(argv[2]); 
@@ -29,8 +33,9 @@ int main(int argc, char *argv[]) {
     float diag = 0.7071f; 
     float dir_x[8] = {1.0,  diag, 0.0, -diag, -1.0, -diag,  0.0,  diag};
     float dir_y[8] = {0.0, -diag, -1.0, -diag,  0.0,  diag,  1.0,  diag}; 
-
+    
     while(1) {
+        strcpy(global_current_status, "Reading Params");
         get_params(&p); 
 
         // Resize Logic
@@ -49,6 +54,7 @@ int main(int argc, char *argv[]) {
         struct timeval tv = {0, 0};
         FD_ZERO(&fds); FD_SET(fd_in, &fds);
         
+        strcpy(global_current_status, "Processing Inputs");
         while (select(fd_in+1, &fds, NULL, NULL, &tv) > 0) {
             if (read(fd_in, &state, sizeof(Message)) > 0) {
                 if (state.type == MSG_STOP) return 0;
@@ -72,6 +78,8 @@ int main(int argc, char *argv[]) {
             } else break;
             FD_ZERO(&fds); FD_SET(fd_in, &fds);
         }
+
+        strcpy(global_current_status, "Calculating Physics");
 
         // 1. Raw Repulsion
         float rep_x = 0, rep_y = 0;

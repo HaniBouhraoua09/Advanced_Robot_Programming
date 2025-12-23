@@ -5,7 +5,8 @@ int main() {
     if (access("params.txt", F_OK) != 0) {
         FILE *f = fopen("params.txt", "w");
         if (f) { 
-            fprintf(f, "M 1.0\nK 0.5\nT 0.1\nWidth 80\nHeight 24\n"); 
+            // CHANGED: Added WatchdogT 2
+            fprintf(f, "M 1.0\nK 0.5\nT 0.1\nWidth 80\nHeight 24\nWatchdogT 2\n"); 
             fclose(f); 
         }
     }
@@ -24,6 +25,17 @@ int main() {
         pipe(p_bb_dyn) < 0 || pipe(p_bb_map) < 0 || pipe(p_bb_ctrl) < 0) {
         perror("Pipe creation failed"); exit(1);
     }
+    
+
+    // Clear old log files
+    FILE *f;
+    f = fopen(LOG_FILE_sys, "w"); if(f) fclose(f);
+    f = fopen(LOG_FILE_wd, "w");  if(f) fclose(f);
+    f = fopen(PID_FILE, "w");     if(f) fclose(f);
+
+    // Initialize logger for Master
+    log_message(LOG_FILE_sys, "MASTER", "System starting up...");
+    
 
     char arg1[10], arg2[10], arg3[10], arg4[10], arg5[10], arg6[10], arg7[10];
 
@@ -75,11 +87,6 @@ int main() {
         exit(0);
     }
     
-    // --- PRINT PIDs (Matches your screenshot) ---
-    printf("Konsole of Map pid is %d\n", map_pid);
-    printf("Target pid is %d\n", targ_pid);
-    printf("Obstacles pid is %d\n", obs_pid);
-    // --------------------------------------------
 
     // 8. LAUNCH CONTROL WINDOW
     pid_t ctrl_pid = fork();
@@ -90,6 +97,23 @@ int main() {
         execlp("konsole", "konsole", "-e", "./control", arg1, arg2, NULL);
         exit(0);
     }
+    
+    // 9. Watchdog Launch
+    pid_t wd_pid = fork();
+    if (wd_pid == 0) {
+        // Opens in a new terminal window
+        execlp("konsole", "konsole", "-e", "./watchdog", NULL);
+        exit(0);
+    }
+    
+    // --- PRINT PIDs ---
+    printf("Blackboard pid is %d\n", bb_pid);
+    printf("Dynamics pid is %d\n", dyn_pid);
+    printf("Control_window pid is %d\n", ctrl_pid);
+    printf("Konsole of Map pid is %d\n", map_pid);
+    printf("Target pid is %d\n", targ_pid);
+    printf("Obstacles pid is %d\n", obs_pid);
+    // --------------------------------------------
 
     // 9. CLOSE PIPES IN MASTER
     close(p_ctrl_bb[0]); close(p_ctrl_bb[1]);

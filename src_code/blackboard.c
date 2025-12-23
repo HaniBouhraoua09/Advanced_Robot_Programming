@@ -1,6 +1,10 @@
 #include "drone.h"
 
 int main(int argc, char *argv[]) {
+
+    // This now does Registering AND Listening
+    setup_watchdog("BLACKBOARD"); 
+    
     if (argc < 8) return 1;
     // Input FDs
     int fd_ctrl = atoi(argv[1]);
@@ -28,8 +32,13 @@ int main(int argc, char *argv[]) {
 
     Message msg;
     int running = 1;
+    
+
 
     while(running) {
+    
+        strcpy(global_current_status, "Running");
+        
         read_set = master_set;
         if (select(max_fd+1, &read_set, NULL, NULL, NULL) > 0) {
             

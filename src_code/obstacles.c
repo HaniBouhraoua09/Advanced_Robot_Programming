@@ -5,6 +5,10 @@
 #define MIN_DIST 6.0 
 
 int main(int argc, char *argv[]) {
+
+    // This now does Registering AND Listening
+    setup_watchdog("OBSTACLES"); 
+    
     if (argc < 2) return 1;
     int fd_out = atoi(argv[1]);
 
@@ -17,13 +21,16 @@ int main(int argc, char *argv[]) {
     struct { float x, y; } batch[15];
 
     // Wait 1 second to sync start with Targets
+    strcpy(global_current_status, "Initializing");
     sleep(1); 
-
+    
     while(1) {
+        strcpy(global_current_status, "Reading Params");
         get_params(&p); 
         if (p.W < 10) { sleep(1); continue; }
 
         // Generate 10 Obstacles (matching the 10 Targets)
+        strcpy(global_current_status, "Generating Obstacles");
         for(int i=0; i<10; i++) {
             msg.id = i; 
             int valid = 0, attempts = 0;
@@ -45,8 +52,14 @@ int main(int argc, char *argv[]) {
             write(fd_out, &msg, sizeof(Message));
         }
         
-        // SYNC: Sleep 20 seconds (Same as targets.c)
-        sleep(20); 
+        strcpy(global_current_status, "Sleeping");
+        
+        // --- CHANGED: Sleep loop to handle Watchdog interruptions ---
+        int t = 60; // Wait 60 seconds (or read from params if you prefer)
+        while (t > 0) {
+            t = sleep(t);
+        }
+        // ----------------------------------------------------------
     }
     return 0;
 }

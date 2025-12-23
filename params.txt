@@ -1,5 +1,5 @@
 M 1.00
 K 0.50
 T 0.10
-Width 89
-Height 38
+Width 62
+Height 18

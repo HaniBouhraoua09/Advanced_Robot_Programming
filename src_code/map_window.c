@@ -90,6 +90,10 @@ void layout_and_draw(WINDOW *win) {
 }
 
 int main(int argc, char *argv[]) {
+
+    // This now does Registering AND Listening
+    setup_watchdog("MAP_WIN");
+    
     if(argc < 2) return 1;
     int fd_in = atoi(argv[1]);
 
@@ -111,7 +115,11 @@ int main(int argc, char *argv[]) {
 
     Message msg;
 
+
     while(1) {
+    
+        strcpy(global_current_status, "Updating Display");
+        
         int ch = getch();
         if (ch == KEY_RESIZE) { 
             resize_term(0, 0); 

@@ -13,6 +13,7 @@
 #include <signal.h>
 #include <math.h>
 #include <errno.h>
+#include "logger.h"
 
 // Message Codes
 #define MSG_STOP      0
@@ -36,10 +37,13 @@ typedef struct {
     int W, H;
 } Params;
 
-void get_params(Params *p) {
+// --- CHANGED: Global status variable ---
+char global_current_status[64] = "Initializing";
 
-    // For safety if the params.txt file is missing or data corrupted 
-    // So we set these default values 
+// Global variable to store the name 
+char global_process_name[32] = "UNKNOWN";
+
+void get_params(Params *p) {
     p->M = 1.0; p->K = 0.5; p->T = 0.1; p->W = 80; p->H = 24;
     
     FILE *f = fopen("params.txt", "r");
@@ -54,4 +58,25 @@ void get_params(Params *p) {
     }
     fclose(f);
 }
+
+// The function that replies to the Watchdog 
+void watchdog_handler(int sig) {
+    if (sig == SIGUSR1) {
+        // --- CHANGED: Logs the dynamic status ---
+        log_message(LOG_FILE_wd, global_process_name, global_current_status);
+    }
+}
+
+// The "All-in-One" Setup Function 
+void setup_watchdog(const char *name) {
+    strncpy(global_process_name, name, 31);
+    register_pid(name, getpid());
+
+    struct sigaction sa;
+    sa.sa_handler = watchdog_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
+    sigaction(SIGUSR1, &sa, NULL);
+}
+
 #endif

@@ -1,16 +1,20 @@
 #!/bin/bash
 
-# 1. Clean previous builds (Optional, ensures fresh start)
+echo "--- Cleaning up old logs and binaries ---"
+rm -f *.log pids.txt
 make clean
 
-# 2. Compile everything using the new Makefile
+echo "--- Compiling Project ---"
 make
 
-# 3. Check if compilation succeeded
-if [ $? -eq 0 ]; then
-    echo "Compilation successful. Starting Drone Simulator..."
-    # 4. Run the master process
-    ./master
-else
-    echo "Compilation failed."
+# Check if make succeeded
+if [ $? -ne 0 ]; then
+    echo "Error: Compilation failed."
+    exit 1
 fi
+
+# Ensure ALL binaries are executable (Added watchdog here)
+chmod +x master blackboard dynamics obstacles targets map_window control watchdog
+
+echo "--- Starting Drone System ---"
+./master

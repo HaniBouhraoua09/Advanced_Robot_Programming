@@ -5,6 +5,10 @@
 #define MIN_DIST 5.0
 
 int main(int argc, char *argv[]) {
+
+    // This now does Registering AND Listening
+    setup_watchdog("TARGETS");
+
     if (argc < 2) return 1;
     int fd_out = atoi(argv[1]);
 
@@ -14,14 +18,15 @@ int main(int argc, char *argv[]) {
     struct { float x, y; } batch[20];
 
     // Sync start
+    strcpy(global_current_status, "Initializing");
     sleep(1); 
-
+    
     while(1) {
+        strcpy(global_current_status, "Reading Params");
         get_params(&p); 
         if (p.W < 10) { sleep(1); continue; }
 
-        // --- CHANGE: Generate 9 Targets (IDs 0 to 8) ---
-        // This ensures labels are strictly 1 through 9.
+        strcpy(global_current_status, "Generating Targets");
         for(int i=0; i<9; i++) {
             msg.id = i; 
             
@@ -40,7 +45,14 @@ int main(int argc, char *argv[]) {
             write(fd_out, &msg, sizeof(Message));
         }
         
-        sleep(20); 
+        strcpy(global_current_status, "Sleeping");
+        
+        // --- CHANGED: Sleep loop to handle Watchdog interruption ---
+        int t = 60; // 60 seconds interval
+        while (t > 0) {
+            t = sleep(t);
+        }
+        // ---------------------------------------------------------
     }
     return 0;
 }
