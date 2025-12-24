@@ -99,6 +99,8 @@ $$(3) \quad \sum F_{x,i} = M \left( \frac{x_i - 2x_{i-1} + x_{i-2}}{T^2} \right)
 * x_{i-1}, x_{i-2}: Previous positions.
 * **Suggested Values for T:** $10 \div 100 \text{ ms}$ (corresponding to a $100 \div 10 \text{ Hz}$ simulation cycle).
 
+
+## 4. Directories
 ```
 text
 /DRONE_ROOT/
