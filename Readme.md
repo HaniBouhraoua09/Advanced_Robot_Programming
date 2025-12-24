@@ -1,4 +1,4 @@
-# Drone Simulator Project - Assignment 1
+# Drone Simulator Project - Assignment 1+2
 **Author:** Bouhraoua Hani  
 **Student:** 8314923   
 **Date:** December 23, 2025  
