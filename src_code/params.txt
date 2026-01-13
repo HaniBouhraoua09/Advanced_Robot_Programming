@@ -1,0 +1,6 @@
+M 0.50
+K 0.50
+T 0.10
+Width 89
+Height 38
+WatchdogT 2
