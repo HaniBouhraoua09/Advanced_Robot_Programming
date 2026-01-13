@@ -1,7 +1,9 @@
 # Drone Simulator Project - Assignment 1+2+3
 **Author:** Bouhraoua Hani  
 **Student:** 8314923   
+
 **Tested with Riadh Bahri** , ID :8335614   
+
 **Date of testing assignment 3:** January 13, 2026  
 
 
@@ -215,7 +217,7 @@ When Executing the program, you will be asked to choose a mode:
 
 * **Mode 1 (Single Player)**: Runs the simulation locally.
 * **Mode 2 (Server)**: Acts as the host. The program will wait for a client to connect.
-* **Mode 3 (Client)**: Connects to a running Server. You must provide the Server's IP address (found by running `**ip addr**` on the Server's machine).
+* **Mode 3 (Client)**: Connects to a running Server. You must provide the Server's IP address (found by running `ip addr` on the Server's machine).
 
 
 Stop simulation using **P** in the Control Window or by closing the terminal.
